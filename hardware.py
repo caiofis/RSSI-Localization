@@ -17,6 +17,10 @@ class tag(object):
     def getPose(self):
         "Returns the currently pose of the tag"
         return self.pose
+    def predictDistance(self, point):
+        "Predict the distance from the tag to a point on 3D space"
+        return ((self.pose[0]-point[0])**2 + (self.pose[1]-point[1])**2 +
+               (self.pose[2]-point[2])**2)**0.5
 
 class antenna(object):
     "Describes the RFID Antenna as an object"
