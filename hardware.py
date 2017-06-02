@@ -1,10 +1,15 @@
 import matplotlib.pyplot as plt
+import numpy as np
+from ekf import EKF
+
 class tag(object):
     "Describes the RFID tags as an object"
     def __init__(self,Id):
         "Defines the tag Id and pose"
         self.Id = Id
         self.pose = [0,0,0]
+        self.filter = EKF(x=np.array(self.pose),P=np.eye(3),V=np.diag([0.001,0.001,0.001]),
+                          R=np.diag([0.6,0.6,0.6]))
     def __str__(self):
         "Made the class plintable"
         return "Tag:" + str(self.Id) + " Pose:" + str(self.pose)
@@ -21,6 +26,10 @@ class tag(object):
         "Predict the distance from the tag to a point on 3D space"
         return ((self.pose[0]-point[0])**2 + (self.pose[1]-point[1])**2 +
                (self.pose[2]-point[2])**2)**0.5
+    def Update(self, antenna, distance):
+        self.filter.Prediction()
+        self.filter.Update(antenna,distance)
+        self.newPose(self.filter.x)
 
 class antenna(object):
     "Describes the RFID Antenna as an object"
