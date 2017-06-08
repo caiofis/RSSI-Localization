@@ -17,7 +17,7 @@ class EKF(object):
         """Estimate the non-linear state of the system, in this case is
         the actual state."""
         return self.x
-    def H(self,dx,dy,dz):
+    def H1(self,dx,dy,dz):
         """Linearize the measurement function with the Jacobian of h related
         to the state."""
         root = self.h(dx,dy,dz)
@@ -25,7 +25,7 @@ class EKF(object):
         return np.array([[dx/root,0,0],
                          [0,dy/root,0],
                          [0,0,dz/root]])
-    def H1(self,dx,dy,dz):
+    def H(self,dx,dy,dz):
         """Linearize the measurement function with the Jacobian of h related
         to the state."""
         root = self.h(dx,dy,dz)
@@ -45,6 +45,7 @@ class EKF(object):
     def Update(self,antenna, z):
         """Update the Kalman Prediction using the meazurement z.
         Antenna is the pose of the antenna and z is the read dist in meters"""
+        #self.P = self.P + self.V
         dx = self.x[0]-antenna[0]
         dy = self.x[1]-antenna[1]
         dz = self.x[2]-antenna[2]
