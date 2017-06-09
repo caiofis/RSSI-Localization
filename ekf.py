@@ -22,8 +22,8 @@ class EKF(object):
         """Linearize the measurement function with the Jacobian of h related
         to the state."""
         root = self.h(dx,dy,dz)
-        return np.array([dx/root,dy/root,dz/root])
-        #return np.array([dx/root,dy/root,0])
+        #return np.array([dx/root,dy/root,dz/root])
+        return np.array([dx/root,dy/root,0])
     def h(self,dx,dy,dz):
         """"Predict the distance from the tag to a point on 3D space using the
         diference in x, y and z"""
@@ -49,5 +49,7 @@ class EKF(object):
         S = H.dot(self.P.dot(H.T)) + self.R
         K = self.P.dot(H.T.dot(np.linalg.inv(S)))
         self.x = self.x + K.dot(y)
+        #self.x[2] = abs(self.x[2])
+        self.x[2] = 0.6
         self.P = (np.eye(3)-K.dot(H)).dot(self.P)
         #self.P = self.P - (K.dot(H.T)).dot(self.P)
