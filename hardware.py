@@ -9,7 +9,7 @@ class tag(object):
         self.Id = Id
         self.pose = [0,0,0]
         self.filter = EKF(x=np.array(self.pose),P=np.eye(3),V=np.diag([0.0001,0.0001,0.0001]),
-                          R=np.diag([1.99,1.99,1.99]))
+                          R=np.diag([3.99,3.99,3.99]))
     def __str__(self):
         "Made the class plintable"
         return "Tag:" + str(self.Id) + " Pose:" + str(self.pose)
@@ -39,14 +39,22 @@ class antenna(object):
         self.pose = pose
         self.A = A
         self.b = b
+        self.last_dist = [0]#[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     def __str__(self):
         "Made the class plintable"
         return "Antenna:" + str(self.Id) + " Pose:" + str(self.pose)
     def show(self):
         "Plot the antenna as a star on its pose"
         plt.plot(self.pose[0],self.pose[1],'*')
-    def RSSItoMeters(self,RSSI):
-        return RSSI*self.A + self.b
+    def RSSItoMeters(self,RSSI,smooth=True):
+        dist = RSSI*self.A + self.b
+        if smooth:
+            self.last_dist.pop()
+            self.last_dist.append(dist)
+            dist = 0
+            for i in self.last_dist:
+                dist += i
+        return dist
     def showDist(self,RSSI):
         self.show()
         circle = plt.Circle((self.pose[0],self.pose[1]),self.RSSItoMeters(RSSI))
