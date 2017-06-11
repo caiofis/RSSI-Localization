@@ -38,7 +38,7 @@ class EKF(object):
     def Update(self,antenna, z):
         """Update the Kalman Prediction using the meazurement z.
         Antenna is the pose of the antenna and z is the read dist in meters"""
-
+        self.Prediction()
         dx = self.x[0]-antenna[0]
         dy = self.x[1]-antenna[1]
         dz = self.x[2]-antenna[2]
