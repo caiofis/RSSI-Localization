@@ -2,13 +2,20 @@ import hardware
 import matplotlib.pyplot as plt
 import numpy as np
 
-data = np.genfromtxt("./data/dataRSSI_25Oct_15minutes_0103-0118.csv",delimiter="\t",dtype=int)
+def showError():
+	error.append(a0.predictDistance([2.5,1.9,0.6]))
+	plt.figure(2)
+	plt.plot(i,error)
+	i.append(i[-1]+1)
+	plt.figure(1)
+
+data = np.genfromtxt("./data/dataRSSI_Skenario2B_Obstacle_block_patterned.txt",delimiter="\t",dtype=int)
 
 a0 = hardware.tag("a0")
-ant5 = hardware.antenna(Id=5, pose=[0,5,1.8])
-ant6 = hardware.antenna(Id=6, pose=[0,0,1.8])
-ant7 = hardware.antenna(Id=7, pose=[5,0,1.8])
-ant8 = hardware.antenna(Id=8, pose=[5,5,1.8])
+ant5 = hardware.antenna(Id=5, pose=[0,5,1.8],A=-0.08043828,b=9.16771469)
+ant6 = hardware.antenna(Id=6, pose=[0,0,1.8],A=-0.08716238,b=10.10576369)
+ant7 = hardware.antenna(Id=7, pose=[5,0,1.8],A=-0.10571799,b=10.56375537)
+ant8 = hardware.antenna(Id=8, pose=[5,5,1.8],A=-0.086835,b=9.32504799)
 print a0
 print ant5  # 3,65m
 print ant6
@@ -22,12 +29,11 @@ ant8.show()
 ant7.show()
 ant6.show()
 ant5.show()
-
+i=[0]
+error = []
 for read in data:
-	if read[1] == 13:
+	if read[1] == 18:
 		#Define the distance from tag
-		plt.pause(0.5)
-		print a0
 		if read[0] == 5:
 			pose,dist = ant5.getRead(read[2])
 			a0.Update(antenna=pose,distance=dist)
@@ -44,5 +50,8 @@ for read in data:
 			pose,dist = ant8.getRead(read[2])
 			a0.Update(antenna=pose,distance=dist)
 			a0.show()
+			showError()
+			plt.pause(0.0001)
+			print a0
 plt.pause(5)
 plt.show()
