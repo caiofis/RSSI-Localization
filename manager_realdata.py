@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def showError():
-	error.append(a0.predictDistance([2.5,1.9,0.6]))
+	error.append(a0.predictDistance([3.7,3.7,0.6]))
 	plt.figure(2)
 	plt.plot(i,error)
 	i.append(i[-1]+1)
@@ -22,7 +22,7 @@ print ant6
 print ant7
 print ant8
 
-plt.ion()
+#plt.ion()
 plt.xlim([-1,6])
 plt.ylim([-1,6])
 ant8.show()
@@ -32,26 +32,30 @@ ant5.show()
 i=[0]
 error = []
 for read in data:
-	if read[1] == 18:
+	if read[1] == 1:
 		#Define the distance from tag
 		if read[0] == 5:
 			pose,dist = ant5.getRead(read[2])
 			a0.Update(antenna=pose,distance=dist)
-			a0.show()
+			#a0.show()
 		if read[0] == 6:
 			pose,dist = ant6.getRead(read[2])
 			a0.Update(antenna=pose,distance=dist)
-			a0.show()
+			#a0.show()
 		if read[0] == 7:
 			pose,dist = ant7.getRead(read[2])
 			a0.Update(antenna=pose,distance=dist)
-			a0.show()
+			#a0.show()
 		if read[0] == 8:
 			pose,dist = ant8.getRead(read[2])
 			a0.Update(antenna=pose,distance=dist)
-			a0.show()
-			showError()
-			plt.pause(0.0001)
 			print a0
+			a0.show()
+			error.append(a0.predictDistance([1.3,3.7,0.6]))
+			i.append(i[-1]+1)
+showError()
+
+plt.pause(0.0000001)
+
 plt.pause(5)
 plt.show()
