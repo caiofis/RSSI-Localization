@@ -3,13 +3,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def showError():
-	error.append(a0.predictDistance([3.7,3.7,0.6]))
+	error.append(a0.predictDistance([2.5,2.5,0.6]))
 	plt.figure(2)
 	plt.plot(i,error)
 	i.append(i[-1]+1)
 	plt.figure(1)
 
-data = np.genfromtxt("./data/dataRSSI_Skenario2B_Obstacle_block_patterned.txt",delimiter="\t",dtype=int)
+data = np.genfromtxt("./data/dataRSSI_Skenario3_Target_E_tags_move.txt",delimiter="\t",dtype=int)
 
 a0 = hardware.tag("a0")
 ant5 = hardware.antenna(Id=5, pose=[0,5,1.8],A=-0.08043828,b=9.16771469)
@@ -32,7 +32,7 @@ ant5.show()
 i=[0]
 error = []
 for read in data:
-	if read[1] == 1:
+	if read[1] == 13:
 		#Define the distance from tag
 		if read[0] == 5:
 			pose,dist = ant5.getRead(read[2])
@@ -51,7 +51,7 @@ for read in data:
 			a0.Update(antenna=pose,distance=dist)
 			print a0
 			a0.show()
-			error.append(a0.predictDistance([1.3,3.7,0.6]))
+			error.append(a0.predictDistance([2.5,2.5,0.6]))
 			i.append(i[-1]+1)
 showError()
 
