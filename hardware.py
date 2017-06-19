@@ -7,9 +7,9 @@ class tag(object):
     def __init__(self,Id):
         "Defines the tag Id and pose"
         self.Id = Id
-        self.pose = [0,0,0]
+        self.pose = [0.0,0.0,0.0]
         self.filter = EKF(x=np.array(self.pose),P=np.eye(3),V=np.diag([0.000001,0.000001,0.000001]),
-                          R=np.diag([7.5,7.50,4.50]))
+                          R=np.diag([7.5,7.50,7.50]))
     def __str__(self):
         "Made the class plintable"
         return "Tag:" + str(self.Id) + " Pose:" + str(self.pose)
