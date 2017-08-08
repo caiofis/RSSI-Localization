@@ -10,7 +10,6 @@ def showError():
 	plt.figure(1)
 
 data = np.genfromtxt("./data/dataRSSI_Skenario3_Target_E_tags_move.txt",delimiter="\t",dtype=int)
-
 a0 = hardware.tag("a0")
 ant5 = hardware.antenna(Id=5, pose=[0,5,1.8],A=-0.08043828,b=9.16771469)
 ant6 = hardware.antenna(Id=6, pose=[0,0,1.8],A=-0.08716238,b=10.10576369)
