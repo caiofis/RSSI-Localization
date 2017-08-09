@@ -54,10 +54,11 @@ class EKF(object):
         S = H.dot(self.P.dot(H.T)) + self.R
         K = self.P.dot(H.T.dot(np.linalg.inv(S)))
         self.x = self.x + K.dot(y)
-        mea_z =abs(z**2 - (self.x[0])**2- (self.x[1])**2)**0.5 - antenna[2]
-        a = 0.4
-        self.x[2] =  ((1-a)*self.x[2] + a* mea_z)
-        print self.x[2]
+        #mea_z =abs(z**2 - (self.x[0])**2- (self.x[1])**2)**0.5 - antenna[2]
+        #a = 0.4
+        #self.x[2] =  ((1-a)*self.x[2] + a* mea_z)
+        self.x[2] = 0.9
+        #print self.x[2]
         #self.x[2] = abs(self.x[2])
         #self.x[2] =  0.9
         self.P = (np.eye(3)-K.dot(H)).dot(self.P)
