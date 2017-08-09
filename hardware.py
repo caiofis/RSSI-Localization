@@ -13,9 +13,9 @@ class tag(object):
     def __str__(self):
         "Made the class plintable"
         return "Tag:" + str(self.Id) + " Pose:" + str(self.pose)
-    def show(self):
+    def show(self,color=None):
         "Plot the tag as a point on its pose"
-        plt.plot(self.pose[0],self.pose[1],'o')
+        plt.plot(self.pose[0],self.pose[1],'o',color=color)
     def newPose(self,new_pose):
         "Sets a new pose to the tag"
         self.pose = new_pose
