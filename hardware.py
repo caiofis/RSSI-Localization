@@ -7,15 +7,16 @@ class tag(object):
     def __init__(self,Id):
         "Defines the tag Id and pose"
         self.Id = Id
-        self.pose = [0,0,0]
-        self.filter = EKF(x=np.array(self.pose),P=np.eye(3),V=np.diag([0.000001,0.000001,0.000001]),
-                          R=np.diag([7.5,7.50,4.50]))
+        self.pose = [0.0,0.0,0.0]
+        self.filter = EKF(x=np.array(self.pose),P=np.eye(3),V=np.diag([0.0001,0.0001,0.0001]),
+                          R=np.diag([40,40,40]))
+                          #R=np.diag([7.5,7.50,7.50]))
     def __str__(self):
         "Made the class plintable"
         return "Tag:" + str(self.Id) + " Pose:" + str(self.pose)
-    def show(self):
+    def show(self,color=None):
         "Plot the tag as a point on its pose"
-        plt.plot(self.pose[0],self.pose[1],'o')
+        plt.plot(self.pose[0],self.pose[1],'o',color=color)
     def newPose(self,new_pose):
         "Sets a new pose to the tag"
         self.pose = new_pose

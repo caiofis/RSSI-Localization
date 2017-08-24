@@ -22,7 +22,8 @@ class EKF(object):
         """Linearize the measurement function with the Jacobian of h related
         to the state."""
         root = self.h(dx,dy,dz)
-        #return np.array([dx/root,dy/root,dz/root])
+
+        #return np.array([dx/root,dy/root,dz/(2*root)])
         return np.array([dx/(root),dy/(root),0])
     def h(self,dx,dy,dz):
         """"Predict the distance from the tag to a point on 3D space using the
@@ -39,17 +40,26 @@ class EKF(object):
         """Update the Kalman Prediction using the meazurement z.
         Antenna is the pose of the antenna and z is the read dist in meters"""
         self.Prediction()
+
         dx = self.x[0]-antenna[0]
         dy = self.x[1]-antenna[1]
         dz = self.x[2]-antenna[2]
-        H = self.H(dx,dy,dz)
+        root = self.h(dx, dy,dz)
+        #est_z = (abs(root**2 - self.x[0]**2- self.x[1]**2)**0.5)
+        #mea_z =(abs(z**2 - self.x[0]**2- self.x[1]**2)**0.5)
 
+        H = self.H(dx,dy,dz)
         y = z - self.h(dx, dy,dz)
 
         S = H.dot(self.P.dot(H.T)) + self.R
         K = self.P.dot(H.T.dot(np.linalg.inv(S)))
         self.x = self.x + K.dot(y)
+        #mea_z =abs(z**2 - (self.x[0])**2- (self.x[1])**2)**0.5 - antenna[2]
+        #a = 0.4
+        #self.x[2] =  ((1-a)*self.x[2] + a* mea_z)
+        self.x[2] = 0.9
+        #print self.x[2]
         #self.x[2] = abs(self.x[2])
-        self.x[2] = 0.6
+        #self.x[2] =  0.9
         self.P = (np.eye(3)-K.dot(H)).dot(self.P)
         #self.P = self.P - K*((H.T)).dot(self.P)
